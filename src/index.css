@@ -1,0 +1,43 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font: inherit;
+}
+
+body {
+	min-height: 100dvh;
+	min-height: 100vh;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	text-wrap: balance;
+}
+
+img, video, svg {
+	max-width: 100%;
+	display: block;
+	height: auto;
+}
+
+/* Turns off animation for people who don't want to see them */
+@media (prefers-reduced-motion: reduce){
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition: none;
+    }
+}
+
