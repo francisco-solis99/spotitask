@@ -1,15 +1,36 @@
+import {
+  Input,
+  Button
+} from '@chakra-ui/react';
+import { useState } from 'react';
+
 
 export default function Searcher() {
+  const [query, setQuery] = useState('');
+
+  // TODO: UseEffect to change the url when we have pages using query params
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(query);
+  };
+
+  const handleChangeInputSearch = (e) => setQuery(e.target.value);
+
   return (
-    <form className="search__form">
-    <label htmlFor="search">
-        <input className="search__input" type="text" required="" placeholder="Search Tasks" id="search" />
-        <button className="close-btn" type="reset">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+    <form onSubmit={handleSearch}>
+      <div className='searcher__wrapper'>
+        {/* <FormLabel>Search your todos</FormLabel> */}
+        <Input type='text' value={query} onChange={handleChangeInputSearch} />
+        <Button colorScheme='teal' variant='solid' title='Search' type='submit'>
+          <span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 21L16.6569 16.6569M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-        </button>
-    </label>
-</form>
+          </span>
+          {/* <span>Search</span> */}
+        </Button>
+      </div>
+    </form >
   );
 }
