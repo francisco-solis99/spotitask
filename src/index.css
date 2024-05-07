@@ -27,6 +27,12 @@ img, video, svg {
 	height: auto;
 }
 
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
 /* Turns off animation for people who don't want to see them */
 @media (prefers-reduced-motion: reduce){
     html:focus-within {
