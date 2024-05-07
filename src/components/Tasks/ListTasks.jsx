@@ -1,21 +1,20 @@
 import Task from './Task';
 
-const TASKS = [
-  {
-    name: 'Clean the window',
-    done: false,
-  },
-  {
-    name: 'Make the dinner',
-    done: false,
-  }
-];
 
-export default function ListTasks() {
+export default function ListTasks({ tasks, deleteTask, editTask }) {
   return (
     <ul className='task__list'>
       {
-        TASKS.map((task, index) => <Task key={index} name={task.name}/>)
+        tasks.map((task) => (
+          <Task
+            key={task.id}
+            id={task.id}
+            name={task.name}
+            done={task.done}
+            deleteTaskCb={deleteTask}
+            editTaskCb={editTask} />
+        )
+        )
       }
     </ul>
   );
