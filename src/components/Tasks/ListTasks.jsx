@@ -1,7 +1,11 @@
 import Task from './Task';
+import { useTasksContext } from '../../hooks/useTasksContext';
 
 
-export default function ListTasks({ tasks, deleteTask, editTask }) {
+
+export default function ListTasks() {
+  const { tasks } = useTasksContext();
+  console.log('render list of tasks');
   return (
     <ul className='task__list'>
       {
@@ -10,9 +14,7 @@ export default function ListTasks({ tasks, deleteTask, editTask }) {
             key={task.id}
             id={task.id}
             name={task.name}
-            done={task.done}
-            deleteTaskCb={deleteTask}
-            editTaskCb={editTask} />
+            done={task.done} />
         )
         )
       }

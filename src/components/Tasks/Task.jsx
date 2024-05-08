@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useTasksContext } from '../../hooks/useTasksContext';
 
 
-export default function Task({ id, name, done = false, deleteTaskCb, editTaskCb }) {
+export default function Task({ id, name, done = false }) {
+  const { editTask, deleteTask } = useTasksContext();
   const [isEditing, setIsEditing] = useState(false);
   const [taskName, setTaskName] = useState(name);
   const [isDone, setIsDone] = useState(done);
 
   const handleDeleteTask = () => {
-    deleteTaskCb({ idTask: id });
+    deleteTask({ idTask: id });
   };
 
   const handleSaveEditTask = () => {
@@ -16,7 +18,7 @@ export default function Task({ id, name, done = false, deleteTaskCb, editTaskCb 
       name: taskName,
       done: isDone
     };
-    editTaskCb({ idTask: id, updatedTask });
+    editTask({ idTask: id, updatedTask });
     setIsEditing(false);
   };
 
@@ -27,7 +29,7 @@ export default function Task({ id, name, done = false, deleteTaskCb, editTaskCb 
       name: taskName,
       done: e.target.checked
     };
-    editTaskCb({ idTask: id, updatedTask });
+    editTask({ idTask: id, updatedTask });
     setIsEditing(false);
   };
 
