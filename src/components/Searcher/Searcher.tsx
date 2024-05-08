@@ -2,7 +2,7 @@ import {
   Input,
   Button
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 
 export default function Searcher() {
@@ -10,12 +10,12 @@ export default function Searcher() {
   console.log('render searcher');
   // TODO: UseEffect to change the url when we have pages using query params
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(query);
   };
 
-  const handleChangeInputSearch = (e) => setQuery(e.target.value);
+  const handleChangeInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);
 
   return (
     <form onSubmit={handleSearch}>

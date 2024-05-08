@@ -1,5 +1,6 @@
 import Task from './Task';
 import { useTasksContext } from '../../hooks/useTasksContext';
+import { type Task as TaskType } from '../../types/types'
 
 
 
@@ -9,14 +10,13 @@ export default function ListTasks() {
   return (
     <ul className='task__list'>
       {
-        tasks.map((task) => (
+        tasks.map((task: TaskType) => (
           <Task
             key={task.id}
             id={task.id}
             name={task.name}
             done={task.done} />
-        )
-        )
+        ))
       }
     </ul>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
 
 
@@ -6,7 +6,7 @@ export default function AddTaskForm() {
   const { addTask } = useTasksContext();
   const [inputName, setInputName] = useState('');
   console.log('render add Task form');
-  const handleSubmitCreateTask = (e) => {
+  const handleSubmitCreateTask = (e: React.FormEvent) => {
     e.preventDefault();
     addTask({ name: inputName });
     setInputName('');

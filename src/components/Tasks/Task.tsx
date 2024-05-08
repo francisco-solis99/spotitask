@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTasksContext } from '../../hooks/useTasksContext';
 
 
-export default function Task({ id, name, done = false }) {
+export default function Task({ id, name, done = false }: { id: number, name: string, done: boolean }) {
   const { editTask, deleteTask } = useTasksContext();
   const [isEditing, setIsEditing] = useState(false);
   const [taskName, setTaskName] = useState(name);
@@ -22,7 +22,7 @@ export default function Task({ id, name, done = false }) {
     setIsEditing(false);
   };
 
-  const handleDoneTask = (e) => {
+  const handleDoneTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDone(() => e.target.checked);
     const updatedTask = {
       id,
