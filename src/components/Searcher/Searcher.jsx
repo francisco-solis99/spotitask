@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function Searcher() {
   const [query, setQuery] = useState('');
-
+  console.log('render searcher');
   // TODO: UseEffect to change the url when we have pages using query params
 
   const handleSearch = (e) => {
