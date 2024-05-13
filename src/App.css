@@ -6,7 +6,7 @@
                        'navMenu content';
   min-height: 100dvh;
   color: white;
-  background-color:#222;
+  background-color:#1a202c;
 }
 
 .container {
@@ -24,7 +24,7 @@
 .aside__menu {
   padding: 2em 1em;
   overflow: hidden;
-  background-color: #333;
+  background-color: #2d3748;
   grid-area: navMenu;
 }
 
