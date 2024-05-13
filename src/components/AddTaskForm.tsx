@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
-
+import TaskForm from './TaskForm';
+import { Task } from '../types/types';
 
 export default function AddTaskForm() {
   const { addTask } = useTasksContext();
-  const [inputName, setInputName] = useState('');
-  console.log('render add Task form');
-  const handleSubmitCreateTask = (e: React.FormEvent) => {
-    e.preventDefault();
-    addTask({ name: inputName });
-    setInputName('');
+  // console.log('render add Task form');
+
+  const handleSubmitCreateTask = ({ newTask }: { newTask: Task }) => {
+    addTask({ ...newTask });
   };
 
   return (
     <>
-      <form className='form__create-task' style={{ marginBlockEnd: '2em' }} onSubmit={handleSubmitCreateTask}>
-        <input
-          style={{ color: '#222' }}
-          type="text"
-          required
-          value={inputName}
-          onChange={(e) => setInputName(e.target.value)}
-        />
-        <button>Add</button>
-      </form>
+      <TaskForm callback={handleSubmitCreateTask} mode='add' task={null} />
     </>
   );
 }

@@ -5,7 +5,7 @@ type ContainerProps = {
 }
 
 export default function Container(props: ContainerProps) {
-  console.log('render container');
+  // console.log('render container');
   return (
     <div className="container">
       {props.children}

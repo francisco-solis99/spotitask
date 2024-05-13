@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function Menu() {
-  console.log("render menu");
+  // console.log("render menu");
   return (
     <aside className="aside__menu">
       <h1>TODOs</h1>
