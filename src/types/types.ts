@@ -2,9 +2,9 @@ export type Task = {
     id: number
     name: string
     done: boolean
-    date?: Date
+    date?: string
     level?: string
-    list?: TasksList[]
+    list?: string
     isPrincipal?: boolean
 }
 
