@@ -45,7 +45,7 @@ export default function DeleteButton({ id }: { id: number }) {
           backdropFilter='blur(10px)'
         />
         <ModalContent>
-          <Box bg="#222" color={'#fff'}>
+          <Box bg="#2d3748" color={'#fff'}>
 
             <ModalHeader>Remove Task</ModalHeader>
             <ModalCloseButton />

@@ -11,4 +11,5 @@ export type Task = {
 export type TasksList = {
   id: number
   name: string
+  tasksIds: number[]
 }

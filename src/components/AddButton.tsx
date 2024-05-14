@@ -22,6 +22,7 @@ export default function AddButton() {
   const handleSubmitCreateTask = ({ taskInfo }: { taskInfo: Task }) => {
     console.log({ taskInfo });
     addTask({ ...taskInfo });
+    onClose()
   };
 
   return (

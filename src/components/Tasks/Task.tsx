@@ -20,17 +20,18 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
   const colorLevelRef = useRef('')
 
 
+  colorLevelRef.current = COLOR_LEVEL[level?.toLowerCase() as keyof typeof COLOR_LEVEL] ?? 'green'
 
   const handleEditTask = (updatedInfo: {}) => {
     console.log(updatedInfo);
     const updatedTask = {
       id,
       name,
-      done,
+      done: isDone,
       date,
       level,
       list,
-      isPrincipal,
+      isPrincipal: isPriority,
       ...updatedInfo
     };
     editTask({ idTask: id, updatedTask });
@@ -57,10 +58,7 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
             <Stack spacing={'.8em'}>
               <Flex minWidth='max-content' alignItems='center'>
                 <Stack direction={['column', 'row']} spacing='2em'>
-                  {/* <label htmlFor={`task-${id}`}>
-                    <input type="checkbox" id={`task-${id}`} onChange={handleDoneTask} checked={isDone} />
-                  </label> */}
-                  <Checkbox size='md' borderColor='teal.200' colorScheme='teal' onChange={handleDoneTask} checked={isDone} >
+                  <Checkbox size='md' borderColor='teal.200' colorScheme='teal' onChange={handleDoneTask} defaultChecked={isDone} >
                     <span style={{ textDecoration: isDone ? 'line-through' : 'none' }}>{name}</span>
                   </Checkbox>
                 </Stack>

@@ -21,6 +21,7 @@ export default function EditButton({ task }: { task: Task }) {
 
   const handleEditTask = ({ taskInfo }: { taskInfo: Task }) => {
     editTask({ idTask: task.id, updatedTask: taskInfo });
+    onClose()
   };
 
 

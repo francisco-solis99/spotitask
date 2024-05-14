@@ -1,65 +1,103 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { createContext } from "react";
 import { type Task } from '../types/types'
 
-const DEFAULT_TASKS: Task[] = [
-  // {
-  //   id: 1,
-  //   name: "Clean the window",
-  //   done: false,
-  // },
-  // {
-  //   id: 2,
-  //   name: "Make the dinner",
-  //   done: false,
-  // },
-];
+const initialState: Task[] = []
+
+const ACTIONS_TYPES = {
+  ADD_TASK: "ADD_TASK",
+  DELETE_TASK: "DELETE_TASK",
+  EDIT_TASK: "EDIT_TASK",
+} as const
+
+type TaskAction = {
+  type: keyof typeof ACTIONS_TYPES
+  payload?: Task
+  idTask?: number
+}
+
+function tasksReducer(state: Task[], action: TaskAction): Task[] {
+  const { type } = action;
+
+  if (type === ACTIONS_TYPES.ADD_TASK) {
+    if (!action.payload) return state;
+    const newTask = {
+      ...action.payload
+    };
+    return [...state, newTask];
+  }
+
+  if (type === ACTIONS_TYPES.DELETE_TASK) {
+    if (!action.idTask) return state
+    const taskIndexToDelete = state.findIndex(
+      (task) => task.id === action.idTask
+    );
+    const tasksFiltered = state.toSpliced(taskIndexToDelete, 1);
+    return tasksFiltered
+  }
+
+  if (type === ACTIONS_TYPES.EDIT_TASK) {
+    if (!action.idTask || !action.payload) return state
+    const taskIndexToEdit = state.findIndex(
+      (task) => task.id === action.idTask
+    );
+    const tasksUpdated = [...state]
+    tasksUpdated[taskIndexToEdit] = {
+      ...tasksUpdated[taskIndexToEdit],
+      ...action.payload
+    }
+    return tasksUpdated
+  }
+
+  return state;
+
+}
+
+const initialTasksCb = (initialState: Task[]) => {
+  const savedTasksString = window.localStorage.getItem("spoti-tasks");
+  if (!savedTasksString) return initialState;
+  const savedTasks = JSON.parse(savedTasksString);
+  return savedTasks
+}
+
 
 export const TasksContext = createContext(null as any);
-
-
 export function TasksProvider(props: any) {
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const savedTasksString = window.localStorage.getItem("spoti-tasks");
-    if (!savedTasksString) return DEFAULT_TASKS;
-    const savedTasks = JSON.parse(savedTasksString);
-    return [...savedTasks];
-  });
+  const [tasks, dispatch] = useReducer(tasksReducer, initialState, initialTasksCb)
 
   useEffect(() => {
     window.localStorage.setItem("spoti-tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  // TODO: change to a reducer
-  // Tasks functions
+
   const addTask = ({ name, level, list, isPrincipal, date }: Task) => {
-    // console.log({ name, level, list, isPrincipal, date })
-    const newTask = {
-      id: (tasks[tasks.length - 1]?.id ?? 1) + 1,
-      name: name,
-      done: false,
-      date,
-      level,
-      list,
-      isPrincipal,
-    };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+    dispatch({
+      type: ACTIONS_TYPES.ADD_TASK,
+      payload: {
+        id: (tasks[tasks.length - 1]?.id ?? 1) + 1,
+        done: false,
+        name,
+        level,
+        list,
+        isPrincipal,
+        date
+      }
+    })
   };
 
-  const findTaskIndexById = ({ idTask }: { idTask: number }) =>
-    tasks.findIndex((task) => task.id === idTask);
-
   const deleteTask = ({ idTask }: { idTask: number }) => {
-    const taskIndexToDelete = findTaskIndexById({ idTask });
-    const tasksFiltered = tasks.toSpliced(taskIndexToDelete, 1);
-    setTasks(tasksFiltered);
+    dispatch({
+      type: ACTIONS_TYPES.DELETE_TASK,
+      idTask
+    })
   };
 
   const editTask = ({ idTask, updatedTask }: { idTask: number, updatedTask: Task }) => {
-    const taskIndexToUpdate = findTaskIndexById({ idTask });
-    const tasksUpdated = [...tasks];
-    tasksUpdated[taskIndexToUpdate] = { ...updatedTask, id: idTask };
-    setTasks(tasksUpdated);
+    dispatch({
+      type: ACTIONS_TYPES.EDIT_TASK,
+      payload: updatedTask,
+      idTask
+    })
   };
 
   const valueContext = {
