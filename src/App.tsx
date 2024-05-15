@@ -4,6 +4,7 @@ import { TasksProvider } from "./context/TasksContext";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import Lists from "./pages/Lists";
+import Search from "./pages/Search";
 
 import Searcher from "./components/Searcher/Searcher";
 import Container from "./components/Container";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/lists" element={<Lists />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </main>
       </div>

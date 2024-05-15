@@ -2,17 +2,36 @@ import {
   Input,
   Button
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useDebounce } from "@uidotdev/usehooks";
 
 
 export default function Searcher() {
   const [query, setQuery] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [_, setSearchParams] = useSearchParams();
+
   // console.log('render searcher');
-  // TODO: UseEffect to change the url when we have pages using query params
+  const debouncedSearchTerm = useDebounce(query, 300);
+
+  useEffect(() => {
+    if (location.pathname !== '/search') return;
+    setSearchParams({
+      q: query
+    })
+  }, [debouncedSearchTerm])
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(query);
+    //navigate to the search page
+    if (location.pathname !== '/search') {
+      navigate(`/search?q=${query}`);
+      return;
+    }
   };
 
   const handleChangeInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);

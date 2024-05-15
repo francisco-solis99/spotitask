@@ -1,4 +1,3 @@
-import { useTasksContext } from '../hooks/useTasksContext';
 import TaskForm from './TaskForm';
 import {
   Drawer,
@@ -15,12 +14,11 @@ import {
 import { EditIcon } from '../components/icons/EditIcon';
 import { Task } from '../types/types';
 
-export default function EditButton({ task }: { task: Task }) {
+export default function EditButton({ task, editTaskCb }: { task: Task, editTaskCb: Function }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { editTask } = useTasksContext();
 
   const handleEditTask = ({ taskInfo }: { taskInfo: Task }) => {
-    editTask({ idTask: task.id, updatedTask: taskInfo });
+    editTaskCb({ idTask: task.id, updatedTask: taskInfo });
     onClose()
   };
 

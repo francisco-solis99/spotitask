@@ -1,18 +1,30 @@
+import { useEffect, useState } from 'react';
 import Task from './Task';
-import { useTasksContext } from '../../hooks/useTasksContext';
+// import { useTasksContext } from '../../hooks/useTasksContext';
 import { type Task as TaskType } from '../../types/types'
 
 
 
-export default function ListTasks() {
-  const { tasks } = useTasksContext();
-  // console.log('render list of tasks');
+export default function ListTasks({ tasks, querySearch }: { tasks: TaskType[], querySearch?: string | null }) {
+  const [tasksList, setTaskList] = useState<TaskType[]>([])
 
+  useEffect(() => {
+    // console.log({ querySearch });
+    if (!querySearch || querySearch === '') {
+      setTaskList(() => tasks)
+      return
+    }
+    const queryStr = querySearch?.toLowerCase()
+    const tasksSearched = tasks.filter((task: TaskType) => {
+      return task.name.toLowerCase().includes(queryStr)
+    })
+    setTaskList(() => tasksSearched)
+  }, [querySearch, tasks])
 
   return (
     <ul className='task__list' style={{ display: 'grid', gap: '1em' }}>
       {
-        tasks.map((task: TaskType) => (
+        tasksList.map((task: TaskType) => (
           <Task
             key={task.id}
             id={task.id}

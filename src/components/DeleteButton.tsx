@@ -12,15 +12,14 @@ import {
   Box
 } from '@chakra-ui/react'
 import { RemoveIcon } from '../components/icons/RemoveIcon';
-import { useTasksContext } from '../hooks/useTasksContext';
 
 
-export default function DeleteButton({ id }: { id: number }) {
+export default function DeleteButton({ id, deleteTaskCb }: { id: number, deleteTaskCb: Function }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { deleteTask } = useTasksContext();
 
   const handleDeleteTask = () => {
-    deleteTask({ idTask: id });
+    deleteTaskCb({ idTask: id });
+    onClose()
   };
 
 

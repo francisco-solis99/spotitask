@@ -13,8 +13,8 @@ const COLOR_LEVEL = {
   'hard': 'red'
 } as const
 
-export default function Task({ id, name, level, list, isPrincipal, date, done = false }: Task) {
-  const { editTask } = useTasksContext();
+function Task({ id, name, level, list, isPrincipal, date, done = false }: Task) {
+  const { editTask, deleteTask } = useTasksContext();
   const [isDone, setIsDone] = useState(done);
   const [isPriority, setIsPriority] = useState(isPrincipal)
   const colorLevelRef = useRef('')
@@ -31,7 +31,7 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
       date,
       level,
       list,
-      isPrincipal: isPriority,
+      isPrincipal,
       ...updatedInfo
     };
     editTask({ idTask: id, updatedTask });
@@ -71,7 +71,7 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
                   colorScheme='teal.200'
                   _hover={{ bg: "rgba(129, 230, 217, 0.12)", svg: { fill: "black" } }}
                   aria-label='Priorize task'
-                  icon={<StarIcon style={{ fill: isPrincipal ? 'currentColor' : 'none' }} />}
+                  icon={<StarIcon style={{ fill: isPriority ? 'currentColor' : 'none' }} />}
                   onClick={handleTogglePriorityTask}
                 />
               </Flex>
@@ -86,8 +86,8 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
                 </Flex>
                 <Spacer />
                 <ButtonGroup gap='1'>
-                  <EditButton task={{ id, name, level, list, isPrincipal, date, done }} />
-                  <DeleteButton id={id} />
+                  <EditButton task={{ id, name, level, list, isPrincipal, date, done }} editTaskCb={editTask} />
+                  <DeleteButton id={id} deleteTaskCb={deleteTask} />
                 </ButtonGroup>
               </Flex>
             </Stack>
@@ -97,3 +97,6 @@ export default function Task({ id, name, level, list, isPrincipal, date, done = 
     </li >
   );
 }
+
+
+export default React.memo(Task)
