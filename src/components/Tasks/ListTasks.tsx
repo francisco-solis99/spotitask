@@ -24,18 +24,20 @@ export default function ListTasks({ tasks, querySearch }: { tasks: TaskType[], q
   return (
     <ul className='task__list' style={{ display: 'grid', gap: '1em' }}>
       {
-        tasksList.map((task: TaskType) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            name={task.name}
-            done={task.done}
-            level={task.level}
-            list={task.list}
-            date={task.date}
-            isPrincipal={task.isPrincipal}
-          />
-        ))
+        tasksList.length ? (
+          tasksList.map((task: TaskType) => (
+            <Task
+              key={task.id}
+              id={task.id}
+              name={task.name}
+              done={task.done}
+              level={task.level}
+              list={task.list}
+              date={task.date}
+              isPrincipal={task.isPrincipal}
+            />)
+          )) :
+          <p>No search results</p>
       }
     </ul>
   );
