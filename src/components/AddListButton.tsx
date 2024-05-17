@@ -1,5 +1,5 @@
-import { useTasksContext } from '../hooks/useTasksContext';
-import TaskForm from './TaskForm';
+import { useListsTasksContext } from '../hooks/useListTasksContext';
+import ListForm from './ListForm';
 import {
   Modal,
   ModalOverlay,
@@ -12,16 +12,15 @@ import {
   Box
 } from '@chakra-ui/react'
 import { CreateIcon } from "./icons/CreateIcon";
-import { Task } from '../types/types';
+import { TasksList } from '../types/types';
 
-export default function AddButton() {
+export default function AddListButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { addTask } = useTasksContext();
-  // console.log('render add Task form');
+  const { addList } = useListsTasksContext();
 
-  const handleSubmitCreateTask = ({ taskInfo }: { taskInfo: Task }) => {
-    console.log({ taskInfo });
-    addTask({ ...taskInfo });
+  const handleSubmitCreateList = ({ listInfo }: { listInfo: TasksList }) => {
+    console.log({ listInfo });
+    addList({ ...listInfo });
     onClose()
   };
 
@@ -29,25 +28,26 @@ export default function AddButton() {
     <>
       <Button
         leftIcon={<CreateIcon />}
-        colorScheme="teal"
+        colorScheme="green"
+        bg={"green.500"}
         variant="solid"
-        title="Create a new task"
+        title="Create a new list"
         onClick={onOpen}
       >
-        Add Task
+        Add List
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay
           bg='blackAlpha.300'
           backdropFilter='blur(10px)'
         />
         <ModalContent>
           <Box bg="#2d3748" p=".75em" color={'#fff'}>
-            <ModalHeader>Create a new task</ModalHeader>
+            <ModalHeader>Create a new list</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <TaskForm callback={handleSubmitCreateTask} mode='add' task={null} />
+              <ListForm onCreateList={handleSubmitCreateList} />
             </ModalBody>
           </Box>
         </ModalContent>

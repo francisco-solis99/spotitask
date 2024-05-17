@@ -38,7 +38,7 @@ export default function DeleteButton({ id, deleteTaskCb }: { id: number, deleteT
         onClick={onOpen}
       />
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay
           bg='blackAlpha.300'
           backdropFilter='blur(10px)'
@@ -55,7 +55,9 @@ export default function DeleteButton({ id, deleteTaskCb }: { id: number, deleteT
             <ModalFooter>
               <Button
                 variant='outline'
-                colorScheme='red'
+                color={'red.400'}
+                border={'1px solid'}
+                borderColor={'red.400'}
                 mr={3}
                 onClick={onClose}
                 _hover={{ bg: "rgba(255, 87, 51, 0.12)" }}
@@ -64,7 +66,9 @@ export default function DeleteButton({ id, deleteTaskCb }: { id: number, deleteT
               </Button>
               <Button
                 variant='outline'
-                colorScheme='teal'
+                color={'teal.400'}
+                border={'1px solid'}
+                borderColor={'teal.400'}
                 onClick={handleDeleteTask}
                 _hover={{ bg: "rgba(0, 128, 128, 0.12)" }}
               >

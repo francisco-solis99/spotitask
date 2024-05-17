@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import Task from './Task';
-// import { useTasksContext } from '../../hooks/useTasksContext';
+import { useTasksContext } from '../../hooks/useTasksContext';
 import { type Task as TaskType } from '../../types/types'
 
 
 
-export default function ListTasks({ tasks, querySearch }: { tasks: TaskType[], querySearch?: string | null }) {
+export default function ListTasks({ querySearch }: { querySearch?: string | null }) {
+  const { tasks, searchTasks } = useTasksContext();
   const [tasksList, setTaskList] = useState<TaskType[]>([])
 
   useEffect(() => {
@@ -15,9 +16,7 @@ export default function ListTasks({ tasks, querySearch }: { tasks: TaskType[], q
       return
     }
     const queryStr = querySearch?.toLowerCase()
-    const tasksSearched = tasks.filter((task: TaskType) => {
-      return task.name.toLowerCase().includes(queryStr)
-    })
+    const tasksSearched = searchTasks({ querySearch: queryStr })
     setTaskList(() => tasksSearched)
   }, [querySearch, tasks])
 

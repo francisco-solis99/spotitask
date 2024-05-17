@@ -12,6 +12,7 @@ import {
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useEffect, useRef, useState } from "react";
 import { Task } from "../types/types";
+import AddListButton from "../components/AddListButton";
 
 export default function Home() {
   const { tasks } = useTasksContext();
@@ -20,13 +21,15 @@ export default function Home() {
   const progressColor = useRef('')
 
   useEffect(() => {
+    console.log({ tasks })
     const numTasksDone = tasks.filter((task: Task) => task.done).length
-    setDoneTasksValue(numTasksDone)
-    doneTasksPorcentaje.current = Number(((numTasksDone * 100) / tasks.length).toFixed(1))
-    if (doneTasksPorcentaje.current <= 20) progressColor.current = 'red'
-    else if (doneTasksPorcentaje.current > 20 && doneTasksPorcentaje.current < 60) progressColor.current = 'yellow'
-    else progressColor.current = 'green'
+    setDoneTasksValue(() => numTasksDone)
   }, [tasks])
+
+  doneTasksPorcentaje.current = Number(((doneTasksValue * 100) / tasks.length).toFixed(1))
+  if (doneTasksPorcentaje.current <= 20) progressColor.current = 'red'
+  else if (doneTasksPorcentaje.current > 20 && doneTasksPorcentaje.current < 60) progressColor.current = 'yellow'
+  else progressColor.current = 'green'
 
 
 
@@ -64,13 +67,13 @@ export default function Home() {
 
           {/* Tasks */}
           <Box marginBlock={'2em'}>
-            <ListTasks tasks={tasks} />
+            <ListTasks />
           </Box>
 
           {/* Buttons actions */}
           <Flex flexDirection={"column"} gap={'.75em'} style={{ position: "fixed", bottom: "5%", right: "5%" }}>
             <AddButton />
-            <AddButton />
+            <AddListButton />
           </Flex>
         </Box>
       </Container>

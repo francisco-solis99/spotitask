@@ -4,12 +4,12 @@ export type Task = {
     done: boolean
     date?: string
     level?: string
-    list?: string
+    list?: number
     isPrincipal?: boolean
 }
 
 export type TasksList = {
   id: number
   name: string
-  tasksIds: number[]
+  // tasksIds: number[]
 }

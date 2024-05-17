@@ -100,11 +100,31 @@ export function TasksProvider(props: any) {
     })
   };
 
+
+  const searchTasks = ({ querySearch }: { querySearch: string }) => {
+    if (!querySearch) return tasks;
+    const tasksFiltered = tasks.filter((task) => {
+      return task.name.toLowerCase().includes(querySearch)
+    })
+    return tasksFiltered
+  }
+
+  const getTasksByListId = ({ listId }: { listId: number }) => {
+    if (!listId) throw new Error('listId required')
+
+    const tasksByList = tasks.filter((task) => {
+      return task.list === listId
+    })
+    return tasksByList
+  }
+
   const valueContext = {
     tasks,
     addTask,
     editTask,
     deleteTask,
+    searchTasks,
+    getTasksByListId
   };
 
   return (

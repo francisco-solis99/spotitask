@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Task } from "../types/types";
+import { Task, TasksList } from "../types/types";
 import { Stack, Input, FormLabel, Button, Select, Switch } from '@chakra-ui/react'
+import { useListsTasksContext } from '../hooks/useListTasksContext';
 
 export default function TaskForm({ mode = 'add', task, callback }: { mode: 'edit' | 'add', task: Task | null, callback: Function }) {
   const isEditMode = mode === 'edit';
   const [inputName, setInputName] = useState(isEditMode ? task?.name : '');
   const [dateFormated, setDateFormated] = useState('')
+  const { lists } = useListsTasksContext()
 
 
   useEffect(() => {
@@ -17,6 +19,7 @@ export default function TaskForm({ mode = 'add', task, callback }: { mode: 'edit
     const formatedDate = `${year}-${month}-${day}`
     setDateFormated(formatedDate)
   }, [])
+
 
 
 
@@ -96,7 +99,13 @@ export default function TaskForm({ mode = 'add', task, callback }: { mode: 'edit
             focusBorderColor='teal.400'
           >
             <option style={{ color: 'black' }} defaultValue='' disabled>Select list</option>
-            <option style={{ color: 'black' }} defaultValue='home'>Home</option>
+            {
+              lists.map((list: TasksList) => {
+                return (
+                  <option key={`opt-list-${list.id}`} style={{ color: 'black' }} defaultValue={list.id}>{list.name}</option>
+                )
+              })
+            }
           </Select>
         </FormLabel>
         <FormLabel>

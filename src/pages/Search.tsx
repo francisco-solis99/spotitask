@@ -4,11 +4,11 @@ import AddButton from "../components/AddButton";
 import { Box } from '@chakra-ui/react'
 import { useEffect, useState } from "react";
 import { useSearchParams } from 'react-router-dom';
-import { useTasksContext } from "../hooks/useTasksContext";
+// import { useTasksContext } from "../hooks/useTasksContext";
 
 
 export default function Search() {
-  const { tasks } = useTasksContext();
+  // const { tasks } = useTasksContext();
 
   const [search, setSearch] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +30,7 @@ export default function Search() {
       <Container>
         <>
           <Box maxW='5xl'>
-            <ListTasks querySearch={search} tasks={tasks} />
+            <ListTasks querySearch={search} />
           </Box>
           <Box style={{ position: "fixed", bottom: "5%", right: "5%" }}>
             <AddButton />
