@@ -28,6 +28,7 @@ export default function TaskForm({ mode = 'add', task, callback }: { mode: 'edit
     e.preventDefault()
     const formData = Object.fromEntries(new FormData(e.currentTarget))
     const { name, date, level, list, priority } = formData
+    console.log({ list })
     const dateTask = date === '' ? new Date().toLocaleDateString('en') : new Date(date.toString()).toLocaleDateString();
     const isPrincipal = priority === ''
     callback({

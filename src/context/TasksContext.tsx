@@ -109,11 +109,11 @@ export function TasksProvider(props: any) {
     return tasksFiltered
   }
 
-  const getTasksByListId = ({ listId }: { listId: number }) => {
-    if (!listId) throw new Error('listId required')
+  const getTasksByListName = ({ listName }: { listName: string }) => {
+    if (!listName) throw new Error('listName required')
 
     const tasksByList = tasks.filter((task) => {
-      return task.list === listId
+      return task.list?.toLowerCase() === listName.toLowerCase()
     })
     return tasksByList
   }
@@ -124,7 +124,7 @@ export function TasksProvider(props: any) {
     editTask,
     deleteTask,
     searchTasks,
-    getTasksByListId
+    getTasksByListName
   };
 
   return (

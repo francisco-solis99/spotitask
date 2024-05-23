@@ -9,13 +9,13 @@ import {
   Grid,
   Tag,
 } from '@chakra-ui/react'
-import { useTasksContext } from "../hooks/useTasksContext";
+import { useTasks } from "../hooks/useTasks";
 import { useEffect, useRef, useState } from "react";
 import { Task } from "../types/types";
 import AddListButton from "../components/AddListButton";
 
 export default function Home() {
-  const { tasks } = useTasksContext();
+  const { tasks } = useTasks({ querySearch: '' });
   const [doneTasksValue, setDoneTasksValue] = useState<number>(0)
   const doneTasksPorcentaje = useRef(0)
   const progressColor = useRef('')
@@ -67,7 +67,7 @@ export default function Home() {
 
           {/* Tasks */}
           <Box marginBlock={'2em'}>
-            <ListTasks />
+            <ListTasks tasks={tasks} />
           </Box>
 
           {/* Buttons actions */}

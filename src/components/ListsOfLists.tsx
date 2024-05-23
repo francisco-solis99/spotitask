@@ -1,23 +1,22 @@
 import { SimpleGrid } from "@chakra-ui/react"
-import { useListsTasksContext } from "../hooks/useListTasksContext"
-import { TasksList } from "../types/types"
 import List from "./List"
+import { useListsTasks } from "../hooks/useListsTasks"
+
 
 export default function ListsOfLists() {
-  const { lists } = useListsTasksContext()
-
+  const { lists } = useListsTasks({})
 
   return (
     <SimpleGrid spacingX={5} spacingY={8} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
       {
         lists.length ? (
-          lists.map((list: TasksList) => {
+          lists.map((list: any) => {
             return (
-              <List key={`list-${list.id}`} listInfo={list} numTasks={0} />
+              <List key={`list-${list.id}`} listInfo={list} numTasks={list.tasks.length} />
             )
           })
         ) : (
-          <p>No lists founded</p>
+          <p>No lists created yet</p>
         )
       }
     </SimpleGrid>

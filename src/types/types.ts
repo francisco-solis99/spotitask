@@ -4,7 +4,7 @@ export type Task = {
     done: boolean
     date?: string
     level?: string
-    list?: number
+    list?: string
     isPrincipal?: boolean
 }
 
