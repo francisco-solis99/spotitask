@@ -10,7 +10,7 @@ import {
   Button,
   useDisclosure,
   Box
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import { CreateIcon } from "./icons/CreateIcon";
 import { Task } from '../types/types';
 
