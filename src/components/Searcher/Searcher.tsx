@@ -1,54 +1,118 @@
 import {
   Input,
-  Button
+  Button,
+  Select,
+  Flex,
+  FormLabel,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useSearchParams, useMatch } from 'react-router-dom';
 import { useDebounce } from "@uidotdev/usehooks";
+import useSearch from '../../hooks/useSearch';
 
 
 export default function Searcher() {
-  const [query, setQuery] = useState('');
-  const location = useLocation();
+  const match = useMatch('/search')
   const navigate = useNavigate();
   const [_, setSearchParams] = useSearchParams();
 
-  // console.log('render searcher');
+  const { query, level, priority, updateLevel, updateQuery, updatePriority } = useSearch({
+    initialQuery: '',
+    initialLevel: 'all',
+    initialPriority: 'all'
+  })
+
   const debouncedSearchTerm = useDebounce(query, 300);
 
   useEffect(() => {
-    if (location.pathname !== '/search') return;
+    if (!match) return;
+
     setSearchParams({
-      q: query
+      q: query,
+      level: level,
+      priority: priority
     })
-  }, [debouncedSearchTerm])
+  }, [debouncedSearchTerm, level, priority])
+
+  const handleChangeLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateLevel(e.target.value)
+  }
+
+  const handleChangePriority = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updatePriority(e.target.value)
+  }
 
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(query);
     //navigate to the search page
-    if (location.pathname !== '/search') {
-      navigate(`/search?q=${query}`);
+    if (!match) {
+      navigate(`/search?q=${query}&level=${level}&priority=${priority}`);
       return;
     }
   };
 
-  const handleChangeInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);
+  const handleChangeInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => updateQuery(e.target.value);
 
   return (
     <form onSubmit={handleSearch}>
       <div className='searcher__wrapper'>
         {/* <FormLabel>Search your todos</FormLabel> */}
-        <Input type='text' value={query} onChange={handleChangeInputSearch} />
-        <Button colorScheme='teal' variant='solid' title='Search' type='submit'>
-          <span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 21L16.6569 16.6569M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-          {/* <span>Search</span> */}
-        </Button>
+        <Flex align={'center'} justifyContent={'space-between'} border={'1px solid white'} borderRadius={'0.5em'} borderRight={'0'}>
+          <Input type='text' value={query} border={'0'} onChange={handleChangeInputSearch} placeholder='Search' />
+
+          <Button colorScheme='teal' variant='solid' title='Search' type='submit'>
+            <span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21L16.6569 16.6569M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            {/* <span>Search</span> */}
+          </Button>
+        </Flex>
+
+        {/* Search Filters */}
+        {
+          match && (
+            <Flex marginBlock={'1em'} gap={'1em'}>
+              <FormLabel>
+                <span>Level</span>
+                <Select
+                  name='level'
+                  size='sm'
+                  borderRadius=".5em"
+                  focusBorderColor='teal.400'
+                  marginBlockStart={'.15em'}
+                  onChange={handleChangeLevel}
+                >
+                  <option style={{ color: 'black' }} defaultValue='' disabled>Select level</option>
+                  <option style={{ color: 'black' }} value='all'>All leveles</option>
+                  <option style={{ color: 'black' }} value='easy'>Easy</option>
+                  <option style={{ color: 'black' }} value='medium'>Medium</option>
+                  <option style={{ color: 'black' }} value='hard'>Hard</option>
+                </Select>
+              </FormLabel>
+              <FormLabel>
+                <span>Priority</span>
+                <Select
+                  name='priority'
+                  size='sm'
+                  borderRadius=".5em"
+                  focusBorderColor='teal.400'
+                  marginBlockStart={'.15em'}
+                  onChange={handleChangePriority}
+                >
+                  <option style={{ color: 'black' }} defaultValue='' disabled>Select priority</option>
+                  <option style={{ color: 'black' }} value='all'>All priorities</option>
+                  <option style={{ color: 'black' }} value='yes'>With Priority</option>
+                  <option style={{ color: 'black' }} value='no'>No priority</option>
+                </Select>
+              </FormLabel>
+            </Flex>
+          )
+        }
+
       </div>
     </form >
   );
