@@ -5,28 +5,33 @@ import { Box } from '@chakra-ui/react'
 import { useEffect, useState } from "react";
 import { useSearchParams } from 'react-router-dom';
 import { useTasks } from "../hooks/useTasks";
-// import { useTasksContext } from "../hooks/useTasksContext";
 
 
 export default function Search() {
   const [searchParams] = useSearchParams();
-  const [search, setSearch] = useState(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('q') ?? '';
-    return query;
-  })
-  const { tasks } = useTasks({ querySearch: search });
+  const [search, setSearch] = useState<any>({})
+  const { tasks } = useTasks({
+    querySearch: search.query ?? '',
+    level: search.level ?? 'all',
+    priority: search.priority ?? 'all',
+  });
 
   useEffect(() => {
-    const qParam = searchParams.get('q')
-
-    if (qParam === undefined || qParam === null) return;
-    setSearch(qParam)
+    const query = searchParams.get('q') ?? '';
+    const level = searchParams.get('level') ?? 'all';
+    const priority = searchParams.get('priority') ?? 'all';
+    setSearch(() => {
+      return {
+        query,
+        level,
+        priority
+      }
+    })
   }, [searchParams])
 
 
   return (
-    <>
+    <Box marginBlockStart={'4.25em'}>
       <Container>
         <>
           <Box maxW='5xl'>
@@ -37,6 +42,6 @@ export default function Search() {
           </Box>
         </>
       </Container>
-    </>
+    </Box>
   );
 }

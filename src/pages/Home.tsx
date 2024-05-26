@@ -21,7 +21,6 @@ export default function Home() {
   const progressColor = useRef('')
 
   useEffect(() => {
-    console.log({ tasks })
     const numTasksDone = tasks.filter((task: Task) => task.done).length
     setDoneTasksValue(() => numTasksDone)
   }, [tasks])
