@@ -101,12 +101,34 @@ export function TasksProvider(props: any) {
   };
 
 
-  const searchTasks = ({ querySearch }: { querySearch: string }) => {
-    if (!querySearch) return tasks;
-    const tasksFiltered = tasks.filter((task) => {
-      return task.name.toLowerCase().includes(querySearch)
+  const searchTasks = ({ querySearch, level, priority }: { querySearch: string | null, level?: string | null, priority?: string | null }) => {
+
+    if (!querySearch && !level && !priority) return tasks;
+
+    const isPriority = priority === 'yes'
+
+    const tasksSearched = tasks.filter((task) => {
+      let shouldInclude = true;
+
+      // Filter by query (case-insensitive)
+      if (querySearch && !task.name.toLowerCase().includes(querySearch.toLowerCase())) {
+        shouldInclude = false;
+      }
+
+      // Filter by level (considering "all")
+      if (level && level !== 'all' && task.level?.toLowerCase() !== level) {
+        shouldInclude = false;
+      }
+
+      // Filter by priority (considering "all")
+
+      if (priority && priority !== 'all' && task.isPrincipal !== isPriority) {
+        shouldInclude = false;
+      }
+
+      return shouldInclude;
     })
-    return tasksFiltered
+    return tasksSearched
   }
 
   const getTasksByListName = ({ listName }: { listName: string }) => {
