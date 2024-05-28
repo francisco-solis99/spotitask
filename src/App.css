@@ -1,14 +1,16 @@
 .app__wrapper {
   display: grid;
   grid-template-rows: 100px auto;
-  grid-template-columns: minmax(180px, auto) 1fr;
-  grid-template-areas: 'navMenu header'
-                       'navMenu content';
+  grid-template-columns: 1fr;
+  grid-template-areas: 'header'
+                       'content';
   min-height: 100dvh;
   color: white;
   background-color:#1a202c;
   gap: 1.75em 0;
 }
+
+
 
 .container {
   width: 90%;
@@ -23,17 +25,20 @@
 
 
 .aside__menu {
-  position: sticky;
+  position: fixed;
   top: 0;
-  height: 100vh;
-  padding: 2em 1em;
+  min-height: 100dvh;
+  z-index: 10;
+  transform: translateX(-100%);
+  padding: 2em;
   overflow: hidden;
   background-color: #2d3748;
-  grid-area: navMenu;
+  transition: transform ease-out 200ms;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .aside__menu nav {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,4 +57,51 @@
   /* & input {
     width: auto;
   } */
+}
+
+.actions__buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #2d3748;
+  width: 100%;
+  padding: 0.5em;
+}
+
+
+@media screen and (min-width: 1024px) {
+  .app__wrapper {
+    grid-template-columns: minmax( 180px, auto) 1fr;
+    grid-template-areas: 'navMenu header'
+                         'navMenu content';
+  }
+
+  .aside__menu {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 2em 1em;
+    transform: translateX(0%);
+  }
+
+  .container {
+    max-width: 768px;
+    margin-left: 2em;
+  }
+
+  .actions__buttons {
+    bottom: 5%;
+    left: auto;
+    right: 2%;
+    width: auto;
+    flex-direction: column;
+    background-color: transparent;
+  }
+}
+
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 100%;
+  }
 }
