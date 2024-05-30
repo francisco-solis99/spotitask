@@ -101,11 +101,12 @@ export function TasksProvider(props: any) {
   };
 
 
-  const searchTasks = ({ querySearch, level, priority }: { querySearch: string | null, level?: string | null, priority?: string | null }) => {
+  const searchTasks = ({ querySearch, level, priority, status }: { querySearch: string | null, level?: string | null, priority?: string | null, status?: string | null }) => {
 
-    if (!querySearch && !level && !priority) return tasks;
+    if (!querySearch && !level && !priority && !status) return tasks;
 
     const isPriority = priority === 'yes'
+    const isDone = status === 'yes'
 
     const tasksSearched = tasks.filter((task) => {
       let shouldInclude = true;
@@ -121,8 +122,12 @@ export function TasksProvider(props: any) {
       }
 
       // Filter by priority (considering "all")
-
       if (priority && priority !== 'all' && task.isPrincipal !== isPriority) {
+        shouldInclude = false;
+      }
+
+      // Filter by status
+      if (status && status !== 'all' && task.done !== isDone) {
         shouldInclude = false;
       }
 

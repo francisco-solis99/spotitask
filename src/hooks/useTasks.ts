@@ -3,7 +3,20 @@ import { useTasksContext } from "./useTasksContext";
 import { type Task as TaskType } from '../types/types'
 
 
-export function useTasks({querySearch = null, level = null, priority = null, listName = null}: {querySearch?: string | null, level?: string | null, priority?: string | null, listName?: string | null}) {
+export function useTasks({
+  querySearch = null,
+  level = null,
+  priority = null,
+  listName = null,
+  status = null
+ }:
+  { querySearch?: string | null,
+    level?: string | null,
+    priority?: string | null,
+    listName?: string | null,
+    status?: string | null
+  }
+  ) {
   const { tasks, searchTasks, getTasksByListName } = useTasksContext();
   const [tasksList, setTaskList] = useState<TaskType[]>(tasks)
 
@@ -13,11 +26,12 @@ export function useTasks({querySearch = null, level = null, priority = null, lis
     console.log({
       querySearch,
       level,
-      priority
+      priority,
+      status
     });
-    const tasksSearched = searchTasks({ querySearch: queryStr, level, priority})
+    const tasksSearched = searchTasks({ querySearch: queryStr, level, priority, status})
     setTaskList(() => tasksSearched)
-  }, [querySearch, level, priority, tasks])
+  }, [querySearch, level, priority, status, tasks])
 
   // effcet to get the tasks by list name
   useEffect(() => {

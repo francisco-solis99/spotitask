@@ -14,17 +14,20 @@ export default function Search() {
     querySearch: search.query ?? '',
     level: search.level ?? 'all',
     priority: search.priority ?? 'all',
+    status: search.status ?? 'all'
   });
 
   useEffect(() => {
     const query = searchParams.get('q') ?? '';
     const level = searchParams.get('level') ?? 'all';
     const priority = searchParams.get('priority') ?? 'all';
+    const status = searchParams.get('status') ?? 'all';
     setSearch(() => {
       return {
         query,
         level,
-        priority
+        priority,
+        status
       }
     })
   }, [searchParams])

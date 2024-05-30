@@ -3,7 +3,8 @@ import { useReducer } from "react"
 const ACTIONS = {
   updateQuery: 'updateQuery',
   updateLevel: 'updateLevel',
-  updatePriority: 'updatePriority'
+  updatePriority: 'updatePriority',
+  updateStatus: 'updateStatus'
 } as const;
 
 
@@ -15,7 +16,8 @@ type SearchAction = {
 type Search = {
   query: string,
   level: string,
-  priority: string
+  priority: string,
+  status: string,
 }
 
 function reducer(state: Search, action: SearchAction) {
@@ -39,23 +41,36 @@ function reducer(state: Search, action: SearchAction) {
       priority: payload
     }
   }
+  if (type === ACTIONS.updateStatus) {
+    return {
+      ...state,
+      status: payload
+    }
+  }
 
   return state;
 }
 
-export default function useSearch({ initialQuery = '', initialLevel = 'all', initialPriority = 'all' }) {
+export default function useSearch({
+  initialQuery = '',
+  initialLevel = 'all',
+  initialPriority = 'all',
+  initialStatus = 'all'
+}) {
   const [state, dispatch] = useReducer(reducer, {
     query: initialQuery,
     level:initialLevel,
-    priority:initialPriority
+    priority:initialPriority,
+    status: initialStatus
   })
-  const { query, level, priority } = state
+  const { query, level, priority, status } = state
 
 
   return {
     query,
     level,
     priority,
+    status,
     updateQuery: (queryToUpdate: string) => {
       dispatch({ type: ACTIONS.updateQuery, payload: queryToUpdate })
     },
@@ -64,6 +79,9 @@ export default function useSearch({ initialQuery = '', initialLevel = 'all', ini
     },
     updatePriority: (priorityToUpdate: string) => {
       dispatch({ type: ACTIONS.updatePriority, payload: priorityToUpdate })
+    },
+    updateStatus: (statusToUpdate: string) => {
+      dispatch({ type: ACTIONS.updateStatus, payload: statusToUpdate })
     }
   }
 }
