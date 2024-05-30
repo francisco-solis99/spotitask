@@ -1,24 +1,26 @@
-import Container from "../components/Container";
-import ListTasks from "../components/Tasks/ListTasks";
-import AddButton from "../components/AddButton";
+import { useEffect, useRef, useState } from "react";
 import {
-  Box, Flex, CircularProgress, CircularProgressLabel, Stat,
+  Box, CircularProgress, CircularProgressLabel, Stat,
   StatLabel,
   StatNumber,
   StatHelpText,
   Grid,
   Tag,
 } from '@chakra-ui/react'
+
+import Container from "../components/Container";
+import ListTasks from "../components/Tasks/ListTasks";
+import ActionsButtons from "../components/ActionsButtons";
+
 import { useTasks } from "../hooks/useTasks";
-import { useEffect, useRef, useState } from "react";
 import { Task } from "../types/types";
-import AddListButton from "../components/AddListButton";
 
 export default function Home() {
   const { tasks } = useTasks({ querySearch: '' });
   const [doneTasksValue, setDoneTasksValue] = useState<number>(0)
   const doneTasksPorcentaje = useRef(0)
   const progressColor = useRef('')
+
 
   useEffect(() => {
     const numTasksDone = tasks.filter((task: Task) => task.done).length
@@ -70,10 +72,7 @@ export default function Home() {
           </Box>
 
           {/* Buttons actions */}
-          <Flex flexDirection={"column"} gap={'.75em'} style={{ position: "fixed", bottom: "5%", right: "5%" }}>
-            <AddButton />
-            <AddListButton />
-          </Flex>
+          <ActionsButtons />
         </Box>
       </Container>
     </>
