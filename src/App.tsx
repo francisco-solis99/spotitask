@@ -13,18 +13,30 @@ import Container from "./components/Container";
 import Menu from "./components/Menu";
 
 import "./App.css";
+import { Box } from "@chakra-ui/react";
+// import { useRef } from "react";
+import useToggle from "./hooks/useToggle";
 
 function App() {
+  const { elementToToggle, openElement, closeElement } = useToggle()
+
   return (
     <ListsProvider>
       <TasksProvider>
         <div className="app__wrapper">
           <header className="app__header">
             <Container>
-              <Searcher />
+              <div className="header__wrapper">
+                <button onClick={openElement} className="menu__open">
+                  <svg width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 18v-2h18v2zm0-5v-2h18v2zm0-5V6h18v2z" /></svg>
+                </button>
+                <Box className="searcher__wrapper">
+                  <Searcher />
+                </Box>
+              </div>
             </Container>
           </header>
-          <Menu />
+          <Menu ref={elementToToggle} closeCb={closeElement} />
           <main className="app__content">
             <Routes>
               <Route path="/" element={<Home />} />
