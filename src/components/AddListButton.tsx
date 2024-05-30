@@ -27,6 +27,7 @@ export default function AddListButton() {
   return (
     <>
       <Button
+        size={{ base: 'sm', xl: 'md' }}
         leftIcon={<CreateIcon />}
         colorScheme="green"
         bg={"green.500"}

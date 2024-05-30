@@ -28,6 +28,7 @@ export default function AddButton() {
   return (
     <>
       <Button
+        size={{ base: 'sm', xl: 'md' }}
         leftIcon={<CreateIcon />}
         colorScheme="teal"
         variant="solid"
