@@ -23,12 +23,12 @@ export function useTasks({
   // effect for search some task by name
   useEffect(() => {
     const queryStr = querySearch?.toLowerCase()
-    console.log({
-      querySearch,
-      level,
-      priority,
-      status
-    });
+    // console.log({
+    //   querySearch,
+    //   level,
+    //   priority,
+    //   status
+    // });
     const tasksSearched = searchTasks({ querySearch: queryStr, level, priority, status})
     setTaskList(() => tasksSearched)
   }, [querySearch, level, priority, status, tasks])

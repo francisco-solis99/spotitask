@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Box, CircularProgress, CircularProgressLabel, Stat,
   StatLabel,
@@ -17,21 +17,14 @@ import { Task } from "../types/types";
 
 export default function Home() {
   const { tasks } = useTasks({ querySearch: '' });
-  const [doneTasksValue, setDoneTasksValue] = useState<number>(0)
-  const doneTasksPorcentaje = useRef(0)
+
+  const numTasksDone: number = tasks.filter((task: Task) => task.done).length
+  const doneTasksPorcentaje = Number(((numTasksDone * 100) / tasks.length).toFixed(1))
   const progressColor = useRef('')
 
-
-  useEffect(() => {
-    const numTasksDone = tasks.filter((task: Task) => task.done).length
-    setDoneTasksValue(() => numTasksDone)
-  }, [tasks])
-
-  doneTasksPorcentaje.current = Number(((doneTasksValue * 100) / tasks.length).toFixed(1))
-  if (doneTasksPorcentaje.current <= 20) progressColor.current = 'red'
-  else if (doneTasksPorcentaje.current > 20 && doneTasksPorcentaje.current < 60) progressColor.current = 'yellow'
+  if (doneTasksPorcentaje <= 20) progressColor.current = 'red'
+  else if (doneTasksPorcentaje > 20 && doneTasksPorcentaje < 60) progressColor.current = 'yellow'
   else progressColor.current = 'green'
-
 
 
   return (
@@ -53,15 +46,15 @@ export default function Home() {
               <StatLabel>Tasks Done</StatLabel>
               <StatNumber textAlign={'center'}>
                 <Tag marginBlockStart={'.25em'} size={'lg'} variant='solid' colorScheme='green'>
-                  {doneTasksValue}
+                  {numTasksDone}
                 </Tag>
               </StatNumber>
               <StatHelpText></StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Tasks Progress</StatLabel>
-              <CircularProgress size='80px' thickness='7px' value={doneTasksPorcentaje.current} color={`${progressColor.current}.400`}>
-                <CircularProgressLabel fontSize={'1rem'}>{doneTasksPorcentaje.current}%</CircularProgressLabel>
+              <CircularProgress size='80px' thickness='7px' value={doneTasksPorcentaje} color={`${progressColor.current}.400`}>
+                <CircularProgressLabel fontSize={'1rem'}>{doneTasksPorcentaje}%</CircularProgressLabel>
               </CircularProgress>
             </Stat>
           </Grid>

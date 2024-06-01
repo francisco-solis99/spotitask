@@ -1,17 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { createContext } from "react";
 import { type TasksList } from '../types/types'
-
-const initialState: TasksList[] = [
-  {
-    id: 1,
-    name: 'Home',
-  },
-  {
-    id: 2,
-    name: 'Study',
-  }
-]
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const ACTIONS_TYPES = {
   ADD_LIST: "ADD_LIST",
@@ -47,48 +37,20 @@ function listReducer(state: TasksList[], action: ListAction) {
     return listsFiltered
   }
 
-  // if (type === ACTIONS_TYPES.ADD_TASK_TO_LIST) {
-  //   if (!action.idTask || !action.idList) return state;
-  //   const listIndex = state.findIndex(
-  //     (task) => task.id === action.idList
-  //   );
-  //   const listsUpdated = [...state]
-  //   listsUpdated[listIndex].tasksIds.push(action.idTask)
-  //   return [listsUpdated];
-  // }
-
-  // if (type === ACTIONS_TYPES.DELETE_TASK_TO_LIST) {
-  //   if (!action.idTask || !action.idList) return state;
-  //   const listIndex = state.findIndex(
-  //     (task) => task.id === action.idList
-  //   );
-  //   const listsUpdated = [...state]
-  //   const taskIdsUpdated = listsUpdated[listIndex].tasksIds.filter(taskId => taskId !== action.idTask)
-  //   listsUpdated[listIndex].tasksIds = taskIdsUpdated;
-  //   return [listsUpdated];
-  // }
-
-
   return state
 }
 
-const initialListsCb = (initialState: TasksList[]) => {
-  const savedListsString = window.localStorage.getItem("spoti-lists");
-  if (!savedListsString) return initialState;
-  const savedLists = JSON.parse(savedListsString);
-  return savedLists
-}
 
 export function ListsProvider(props: any) {
-  const [lists, dispatch] = useReducer(listReducer, initialState, initialListsCb);
+  const { item, saveItem } = useLocalStorage({ itemName: 'spoti-lists', initialValue: [] })
+  const [lists, dispatch] = useReducer(listReducer, item);
 
   useEffect(() => {
-    window.localStorage.setItem("spoti-lists", JSON.stringify(lists));
+    saveItem(lists)
   }, [lists]);
 
 
   const addList = ({ name }: TasksList) => {
-    // console.log({ name, level, list, isPrincipal, date })
     dispatch({
       type: ACTIONS_TYPES.ADD_LIST,
       payload: {
