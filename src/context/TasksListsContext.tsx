@@ -5,7 +5,8 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const ACTIONS_TYPES = {
   ADD_LIST: "ADD_LIST",
-  DELETE_LIST: "DELETE_LIST"
+  DELETE_LIST: "DELETE_LIST",
+  INIT: "INIT"
 } as const
 
 type ListAction = {
@@ -28,6 +29,11 @@ function listReducer(state: TasksList[], action: ListAction) {
     return [...state, newList];
   }
 
+  if (type === ACTIONS_TYPES.INIT) {
+    if (!action.payload) return state;
+    return action.payload;
+  }
+
   if (type === ACTIONS_TYPES.DELETE_LIST) {
     if (!action.idList) return state
     const listIndexToDelete = state.findIndex(
@@ -40,10 +46,22 @@ function listReducer(state: TasksList[], action: ListAction) {
   return state
 }
 
+// function initialListsCb(item) {
+//   console.log({ state: item })
+//   return item
+// }
+
 
 export function ListsProvider(props: any) {
-  const { item, saveItem } = useLocalStorage({ itemName: 'spoti-lists', initialValue: [] })
+  const { item, saveItem, loading } = useLocalStorage({ itemName: 'spoti-lists', initialValue: [] })
   const [lists, dispatch] = useReducer(listReducer, item);
+
+  useEffect(() => {
+    dispatch({
+      type: ACTIONS_TYPES.INIT,
+      payload: item
+    })
+  }, [item]);
 
   useEffect(() => {
     saveItem(lists)
@@ -67,12 +85,11 @@ export function ListsProvider(props: any) {
     })
   };
 
-
-
   const valueContext = {
     lists,
     addList,
-    deleteList
+    deleteList,
+    loading
   };
 
   return (

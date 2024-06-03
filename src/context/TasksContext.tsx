@@ -62,6 +62,7 @@ const initialTasksCb = (initialState: Task[]) => {
 
 
 export const TasksContext = createContext(null as any);
+
 export function TasksProvider(props: any) {
   const [tasks, dispatch] = useReducer(tasksReducer, initialState, initialTasksCb)
 

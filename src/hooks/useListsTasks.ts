@@ -6,7 +6,7 @@ import { useTasksContext } from './useTasksContext';
 
 
 export function useListsTasks({listId = ''} : {listId?: string}) {
-  const { lists } = useListsTasksContext()
+  const { lists, loading } = useListsTasksContext()
   const { getTasksByListName } = useTasksContext();
 
 
@@ -36,6 +36,7 @@ export function useListsTasks({listId = ''} : {listId?: string}) {
 
   return {
     lists: listsTasks,
-    listByListId: listById
+    listByListId: listById,
+    loading
   }
 }
