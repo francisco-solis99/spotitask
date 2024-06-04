@@ -11,7 +11,7 @@ import { Task } from "../types/types";
 import Stadistics from "../components/Stadistics";
 
 export default function Home() {
-  const { tasks } = useTasks({ querySearch: '' });
+  const { tasks, loading } = useTasks({ querySearch: '' });
   const numTasksDone = tasks.filter((task: Task) => task.done).length;
 
   return (
@@ -23,7 +23,7 @@ export default function Home() {
 
           {/* Tasks */}
           <Box marginBlock={'2em'}>
-            <ListTasks tasks={tasks} />
+            <ListTasks tasks={tasks} loading={loading} />
           </Box>
 
           {/* Buttons actions */}

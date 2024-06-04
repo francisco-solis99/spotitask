@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 
 export default function Stadistics({ total, rest }: { total: number, rest: number }) {
   const doneTasksPorcentaje = Number(((rest * 100) / total).toFixed(1))
+  const valueDone = isNaN(doneTasksPorcentaje) ? 0 : doneTasksPorcentaje
   const [progressColor, setProgressColor] = useState('white')
 
   useEffect(() => {
@@ -42,8 +43,8 @@ export default function Stadistics({ total, rest }: { total: number, rest: numbe
         </Stat>
         <Stat>
           <StatLabel>Tasks Progress</StatLabel>
-          <CircularProgress size='80px' thickness='7px' value={doneTasksPorcentaje} color={`${progressColor}.400`}>
-            <CircularProgressLabel fontSize={'1rem'}>{doneTasksPorcentaje}%</CircularProgressLabel>
+          <CircularProgress size='80px' thickness='7px' value={valueDone} color={`${progressColor}.400`}>
+            <CircularProgressLabel fontSize={'1rem'}>{valueDone}%</CircularProgressLabel>
           </CircularProgress>
         </Stat>
       </Grid>

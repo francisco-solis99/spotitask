@@ -6,14 +6,14 @@ import { Box } from '@chakra-ui/react'
 import { useTasks } from "../hooks/useTasks";
 
 export default function Tasks() {
-  const { tasks } = useTasks({ querySearch: '' });
+  const { tasks, loading } = useTasks({ querySearch: '' });
 
   return (
     <div>
       <Container>
         <>
           <Box maxW='5xl'>
-            <ListTasks tasks={tasks} />
+            <ListTasks tasks={tasks} loading={loading} />
           </Box>
           <Box style={{ position: "fixed", bottom: "5%", right: "5%" }}>
             <AddButton />

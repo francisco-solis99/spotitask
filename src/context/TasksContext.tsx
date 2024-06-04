@@ -1,23 +1,31 @@
 import { useEffect, useReducer } from "react";
 import { createContext } from "react";
 import { type Task } from '../types/types'
+import useLocalStorage from "../hooks/useLocalStorage";
 
-const initialState: Task[] = []
 
 const ACTIONS_TYPES = {
   ADD_TASK: "ADD_TASK",
   DELETE_TASK: "DELETE_TASK",
   EDIT_TASK: "EDIT_TASK",
+  INIT: "INIT"
 } as const
 
 type TaskAction = {
   type: keyof typeof ACTIONS_TYPES
-  payload?: Task
+  payload?: Task,
+  payloadList?: Task[]
   idTask?: number
 }
 
 function tasksReducer(state: Task[], action: TaskAction): Task[] {
   const { type } = action;
+
+  if (type === ACTIONS_TYPES.INIT) {
+    if (!action.payloadList) return state;
+    return action.payloadList;
+  }
+
 
   if (type === ACTIONS_TYPES.ADD_TASK) {
     if (!action.payload) return state;
@@ -49,25 +57,26 @@ function tasksReducer(state: Task[], action: TaskAction): Task[] {
     return tasksUpdated
   }
 
+
   return state;
 
 }
 
-const initialTasksCb = (initialState: Task[]) => {
-  const savedTasksString = window.localStorage.getItem("spoti-tasks");
-  if (!savedTasksString) return initialState;
-  const savedTasks = JSON.parse(savedTasksString);
-  return savedTasks
-}
-
-
 export const TasksContext = createContext(null as any);
 
 export function TasksProvider(props: any) {
-  const [tasks, dispatch] = useReducer(tasksReducer, initialState, initialTasksCb)
+  const { item, saveItem, loading } = useLocalStorage({ itemName: 'spoti-tasks', initialValue: [] })
+  const [tasks, dispatch] = useReducer(tasksReducer, item)
 
   useEffect(() => {
-    window.localStorage.setItem("spoti-tasks", JSON.stringify(tasks));
+    dispatch({
+      type: ACTIONS_TYPES.INIT,
+      payloadList: item
+    })
+  }, [item]);
+
+  useEffect(() => {
+    saveItem(tasks)
   }, [tasks]);
 
 
@@ -148,6 +157,7 @@ export function TasksProvider(props: any) {
 
   const valueContext = {
     tasks,
+    loading,
     addTask,
     editTask,
     deleteTask,

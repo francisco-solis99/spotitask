@@ -17,7 +17,7 @@ export function useTasks({
     status?: string | null
   }
   ) {
-  const { tasks, searchTasks, getTasksByListName } = useTasksContext();
+  const { tasks, searchTasks, getTasksByListName,loading } = useTasksContext();
   const [tasksList, setTaskList] = useState<TaskType[]>(tasks)
 
   // effect for search some task by name
@@ -43,7 +43,8 @@ export function useTasks({
   }, [listName, tasks])
 
   return  {
-    tasks: tasksList
+    tasks: tasksList,
+    loading
   }
 
 }
